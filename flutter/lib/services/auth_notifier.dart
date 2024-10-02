@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:posthog_flutter/posthog_flutter.dart';
+// import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 // ignore: depend_on_referenced_packages
@@ -25,14 +25,14 @@ class Auth extends _$Auth {
       authStateController.add(session);
 
       // capture posthog events for analytics
-      if (session != null) {
-        await Posthog().identify(
-          userId: session.user.id,
-          userProperties: {"email": session.user.email ?? ""},
-        );
-      } else {
-        await Posthog().reset();
-      }
+      // if (session != null) {
+      //   await Posthog().identify(
+      //     userId: session.user.id,
+      //     userProperties: {"email": session.user.email ?? ""},
+      //   );
+      // } else {
+      //   await Posthog().reset();
+      // }
     });
 
     ref.onDispose(() {
