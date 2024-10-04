@@ -34,7 +34,9 @@ GoRouter router(RouterRef ref) {
           }
           // If user is not authenticated, direct to login screen
           if (user == null && initUrl?.path != '/login') {
-            return '/login';
+            // todo add the authentication wall back in
+            // return '/login';
+            return "/";
           }
           // If user is authenticated and trying to access login or loading, direct to home
           if (user != null &&
@@ -68,7 +70,7 @@ GoRouter router(RouterRef ref) {
         name: 'home',
         path: '/',
         builder: (context, state) {
-          return const HomeScreen(title: "DevToDollars");
+          return const HomeScreen(title: "Todo App");
         },
         routes: [
           GoRoute(
