@@ -15,6 +15,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final GlobalKey _todoListKey = GlobalKey();
   List<bool> _isChecked = [false, false, false];
 
   @override
@@ -34,20 +35,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    'My Todo List',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10.0,
-                          color: Colors.black.withOpacity(0.5),
-                          offset: Offset(2.0, 2.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        DateTime.now().toString().split(' ')[0],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 10.0,
+                              color: Colors.black.withOpacity(0.5),
+                              offset: Offset(2.0, 2.0),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'My Todo List',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 10.0,
+                              color: Colors.black.withOpacity(0.5),
+                              offset: const Offset(2.0, 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -58,9 +80,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
           Positioned(
-            top: (MediaQuery.of(context).size.height / 3) - 100,
+            top: (MediaQuery.of(context).size.height / 3) - 50,
             left: MediaQuery.of(context).size.width * 0.05,
             child: Container(
+              key: _todoListKey,
               width: MediaQuery.of(context).size.width * 0.9,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -85,6 +108,79 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
+          Positioned(
+            top: (MediaQuery.of(context).size.height / 3) - 50,
+            left: MediaQuery.of(context).size.width * 0.05,
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() {});
+                });
+                
+                final RenderBox? todoListRenderBox = _todoListKey.currentContext?.findRenderObject() as RenderBox?;
+                final double todoListHeight = todoListRenderBox?.size.height ?? 0;
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      margin: EdgeInsets.only(top: todoListHeight + 20),
+                      padding: const EdgeInsets.all(16),
+                      child: const Text(
+                        'Completed',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          _buildCompletedTodoItem('Finish project', Icons.task_alt, Colors.orange),
+                          _buildDivider(),
+                          _buildCompletedTodoItem('Buy groceries', Icons.shopping_cart, Colors.teal),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: 10,
+                left: MediaQuery.of(context).size.width * 0.05,
+                right: MediaQuery.of(context).size.width * 0.05,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(
+                onPressed: () {},
+                child: const Text('Add New Task'),
+                ),
+              )
+            )
+          )
         ],
       ),
     );
@@ -123,6 +219,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Container(
       height: 1,
       color: Colors.grey[300],
+    );
+  }
+
+  Widget _buildCompletedTodoItem(String text, IconData icon, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: Colors.white),
+          ),
+          const SizedBox(width: 16),
+          Expanded(child: Text(text, style: const TextStyle(decoration: TextDecoration.lineThrough))),
+          const Checkbox(
+            value: true,
+            onChanged: null,
+          ),
+        ],
+      ),
     );
   }
 }
