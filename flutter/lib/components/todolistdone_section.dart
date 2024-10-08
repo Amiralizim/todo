@@ -8,7 +8,7 @@ class TodoListDoneSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(todoListProvider);
+    final todos = ref.watch(todoListNotifierProvider);
     final completedTodos = todos.where((todo) => todo.isCompleted).toList();
     
     return Container(
@@ -38,14 +38,14 @@ class TodoListDoneSection extends ConsumerWidget {
                 ),
               ),
             ),
-            child: _buildCompletedTodoItem(todo.text, todo.icon, todo.color),
+            child: _buildCompletedTodoItem(todo.text, todo.icon, todo.color, ref, todo.id),
           );
         }),
       ),
     );
   }
 
-  Widget _buildCompletedTodoItem(String text, IconData icon, Color color) {
+  Widget _buildCompletedTodoItem(String text, IconData icon, Color color, WidgetRef ref, String id) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
       child: Row(
@@ -61,9 +61,11 @@ class TodoListDoneSection extends ConsumerWidget {
           ),
           const SizedBox(width: 16),
           Expanded(child: Text(text, style: const TextStyle(decoration: TextDecoration.lineThrough))),
-          const Checkbox(
+          Checkbox(
             value: true,
-            onChanged: null,
+            onChanged: (bool? value) {
+              ref.read(todoListNotifierProvider.notifier).toggleTodo(id);
+            },
           ),
         ],
       ),

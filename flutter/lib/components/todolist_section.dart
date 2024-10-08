@@ -8,7 +8,7 @@ class TodoListSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(todoListProvider);
+    final todos = ref.watch(todoListNotifierProvider);
     final incompleteTodos = todos.where((todo) => !todo.isCompleted).toList();
     
     return Container(
@@ -63,9 +63,7 @@ class TodoItem extends ConsumerWidget {
       trailing: Checkbox(
         value: todo.isCompleted,
         onChanged: (bool? value) {
-          if (value != null) {
-            // ref.read(todoListProvider.notifier).toggleTodoCompletion(todo.id);
-          }
+          ref.read(todoListNotifierProvider.notifier).toggleTodo(todo.id);
         },
       ),
     );
