@@ -7,15 +7,23 @@ class BackgroundLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 3 + 30,
-          decoration: const BoxDecoration(
-            color: Colors.yellow,
-            image: const DecorationImage(
-              image: AssetImage('images/Cover.png'),
-              fit: BoxFit.cover,
+        Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height / 3 + 30,
+              decoration: const BoxDecoration(
+                color: Colors.yellow,
+                image: DecorationImage(
+                  image: AssetImage('images/Cover.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
+            Container(
+              height: MediaQuery.of(context).size.height / 3 + 30,
+              color: Colors.black.withOpacity(0.5),
+            ),
+          ],
         ),
         Expanded(
           child: Container(color: Colors.white),

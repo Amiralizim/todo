@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+  final String title;
+  const HeaderSection({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class HeaderSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'My Todo List',
+            title,
             style: TextStyle(
               color: Colors.white,
               fontSize: 32,

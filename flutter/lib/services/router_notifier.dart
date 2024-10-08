@@ -8,6 +8,7 @@ import 'package:devtodollars/screens/auth_screen.dart';
 import 'package:devtodollars/screens/home_screen.dart';
 import 'package:devtodollars/screens/payments_screen.dart';
 import 'package:devtodollars/services/auth_notifier.dart';
+import 'package:devtodollars/screens/addtask_screen.dart';
 
 part 'router_notifier.g.dart';
 
@@ -18,39 +19,42 @@ Uri? initUrl = Uri.base; // needed to set intiial url state
 
 @riverpod
 GoRouter router(RouterRef ref) {
-  final authState = ref.watch(authProvider);
+  // final authState = ref.watch(authProvider);
   return GoRouter(
-    initialLocation: initUrl?.path, // DO NOT REMOVE
+    // initialLocation: initUrl?.path, // DO NOT REMOVE
+    initialLocation: '/',
     navigatorKey: navigatorKey,
     // observers: [PosthogObserver()],
-    redirect: (context, state) async {
-      return authState.when(
-        data: (user) {
-          // build initial path
-          String? path = initUrl?.path;
-          final queryString = initUrl?.query.trim() ?? "";
-          if (queryString.isNotEmpty && path != null) {
-            path += "?$queryString";
-          }
-          // If user is not authenticated, direct to login screen
-          if (user == null && initUrl?.path != '/login') {
-            // todo add the authentication wall back in
-            // return '/login';
-            return "/";
-          }
-          // If user is authenticated and trying to access login or loading, direct to home
-          if (user != null &&
-              (initUrl?.path == '/login' || initUrl?.path == '/loading')) {
-            return "/";
-          }
-          // After handling initial redirection, clear initUrl to prevent repeated redirections
-          initUrl = null;
-          return path;
-        },
-        error: (_, __) => "/loading",
-        loading: () => "/loading",
-      );
-    },
+    // redirect: (context, state) async {
+    //   return authState.when(
+    //     data: (user) {
+    //       // build initial path
+    //       String? path = initUrl?.path;
+    //       final queryString = initUrl?.query.trim() ?? "";
+    //       if (queryString.isNotEmpty && path != null) {
+    //         path += "?$queryString";
+    //       }
+    //       print('routernotifier: $path');
+    //       // If user is not authenticated, direct to login screen
+    //       if (user == null && initUrl?.path != '/login') {
+    //         // todo add the authentication wall back in
+    //         // return '/login';
+    //         print('stuck here: $path');
+    //         return "/";
+    //       }
+    //       // If user is authenticated and trying to access login or loading, direct to home
+    //       if (user != null &&
+    //           (initUrl?.path == '/login' || initUrl?.path == '/loading')) {
+    //         return "/";
+    //       }
+    //       // After handling initial redirection, clear initUrl to prevent repeated redirections
+    //       initUrl = null;
+    //       return path;
+    //     },
+    //     error: (_, __) => "/loading",
+    //     loading: () => "/loading",
+    //   );
+    // },
     routes: <RouteBase>[
       GoRoute(
         name: 'loading',
@@ -88,6 +92,13 @@ GoRouter router(RouterRef ref) {
         builder: (BuildContext context, GoRouterState state) {
           final qp = state.uri.queryParameters;
           return PaymentsScreen(price: qp["price"]);
+        },
+      ),
+      GoRoute(
+        name: 'add',
+        path: '/add', 
+        builder: (context, state) { 
+          return const AddTaskScreen();
         },
       ),
     ],

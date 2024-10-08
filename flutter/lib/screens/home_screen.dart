@@ -8,6 +8,7 @@ import 'package:devtodollars/components/background_layout.dart';
 import 'package:devtodollars/components/header_section.dart';
 import 'package:devtodollars/components/todolist_section.dart';
 import 'package:devtodollars/components/todolistdone_section.dart';
+import 'package:path/path.dart' as p;
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -31,41 +32,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           SafeArea(
             child: Column(
               children: [
-                const HeaderSection(),
+                const HeaderSection(title: 'My Todo List'),
                 Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    children: [
-                      const TodoListSection(),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Completed',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const TodoListDoneSection(),
-                      const SizedBox(height: 50),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 10
+                  child: Container(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      children: [
+                        const TodoListSection(),
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Completed',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
                           ),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 40,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Add New Task'),
+                        ),
+                        const SizedBox(height: 20),
+                        const TodoListDoneSection(),
+                        const SizedBox(height: 50),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () => context.push('/add'),
+                                child: const Text('Add New Task'),
+                              ),
                             ),
                           ),
-                        ),
-                      ) // Add some space below the header
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
