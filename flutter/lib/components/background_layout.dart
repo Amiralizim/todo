@@ -8,7 +8,7 @@ class BackgroundLayout extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height / 3,
+          height: MediaQuery.of(context).size.height / 3 + 30,
           decoration: const BoxDecoration(
             color: Colors.yellow,
             image: const DecorationImage(

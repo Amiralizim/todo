@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:devtodollars/components/background_layout.dart';
 import 'package:devtodollars/components/header_section.dart';
 import 'package:devtodollars/components/todolist_section.dart';
+import 'package:devtodollars/components/todolistdone_section.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -27,110 +28,49 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: Stack(
         children: [
           const BackgroundLayout(),
-          const HeaderSection(),
-          const TodoListSection(),
-          Positioned(
-            top: (MediaQuery.of(context).size.height / 3) - 50,
-            left: MediaQuery.of(context).size.width * 0.05,
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  setState(() {});
-                });
-                
-                // Get the height of the todo list container
-                final RenderBox? renderBox = _todoListKey.currentContext?.findRenderObject() as RenderBox?;
-                final double todoListHeight = renderBox?.size.height ?? 0;
-
-                return Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  margin: EdgeInsets.only(top: todoListHeight + 20), // Add some spacing
-                  padding: const EdgeInsets.all(16),
-                  child: const Text(
-                    'Completed',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Positioned(
-            top: (MediaQuery.of(context).size.height / 3) - 50,
-            left: MediaQuery.of(context).size.width * 0.05,
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  setState(() {});
-                });
-                
-                final RenderBox? todoListRenderBox = _todoListKey.currentContext?.findRenderObject() as RenderBox?;
-                final double todoListHeight = todoListRenderBox?.size.height ?? 0;
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      margin: EdgeInsets.only(top: todoListHeight + 20),
-                      padding: const EdgeInsets.all(16),
-                      child: const Text(
+          SafeArea(
+            child: Column(
+              children: [
+                const HeaderSection(),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    children: [
+                      const TodoListSection(),
+                      const SizedBox(height: 20),
+                      const Text(
                         'Completed',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                      const SizedBox(height: 20),
+                      const TodoListDoneSection(),
+                      const SizedBox(height: 50),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 10
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          _buildCompletedTodoItem('Finish project', Icons.task_alt, Colors.orange),
-                          _buildDivider(),
-                          _buildCompletedTodoItem('Buy groceries', Icons.shopping_cart, Colors.teal),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 40,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              child: const Text('Add New Task'),
+                            ),
+                          ),
+                        ),
+                      ) // Add some space below the header
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: 10,
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton(
-                onPressed: () {},
-                child: const Text('Add New Task'),
-                ),
-              )
-            )
-          )
         ],
       ),
     );
