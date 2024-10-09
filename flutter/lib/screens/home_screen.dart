@@ -9,6 +9,7 @@ import 'package:devtodollars/components/header_section.dart';
 import 'package:devtodollars/components/todolist_section.dart';
 import 'package:devtodollars/components/todolistdone_section.dart';
 import 'package:path/path.dart' as p;
+import 'package:devtodollars/services/router_notifier.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -26,6 +27,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => context.push('/logout'),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           const BackgroundLayout(),

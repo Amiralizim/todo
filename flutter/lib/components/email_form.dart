@@ -70,21 +70,28 @@ class _EmailFormState extends ConsumerState<EmailForm> {
         if (action == AuthAction.signIn) {
           await authNotif.signInWithPassword(email, password);
         } else if (action == AuthAction.signUp) {
-          await authNotif.signUp(email, password);
-          if (mounted) {
-            setState(() => action = AuthAction.signIn);
-            showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                title: const Text("Check your Email!"),
-                content: const Text(
-                    "We sent an email from hi@devtodollars.com to verify your email"),
-                actions: [
-                  TextButton(
-                      onPressed: context.pop, child: const Text("Ok Matt."))
-                ],
-              ),
-            );
+          try {
+            await authNotif.signUp(email, password);
+            if (mounted) {
+              setState(() => action = AuthAction.signIn);
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text("Check your Email!"),
+                  content: const Text(
+                      "We sent an email from hi@devtodollars.com to verify your email"),
+                  actions: [
+                    TextButton(
+                        onPressed: context.pop, child: const Text("Ok"))
+                  ],
+                ),
+              );
+            }
+          } catch (e) {
+            print('Sign up error: $e');
+            setState(() {
+              errorMessage = "Error during sign up: $e";
+            });
           }
         }
         if (mounted) setState(() => loading = false);
